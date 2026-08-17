@@ -11,8 +11,6 @@
 
 *Bu modül, Python'un temel yapı taşlarını bir bahçe teması etrafında öğretir: fonksiyon tanımlamadan özyinelemeli algoritmalara kadar adım adım ilerler.*
 
-[Kurulum](#-kurulum) • [Kullanım](#-kullanım) • [Egzersizler](#-egzersiz-detayları) • [Nasıl Çalışır](#-python-nasıl-çalışır)
-
 </div>
 
 ---
@@ -281,44 +279,6 @@ python00/
     ├── ft_seed_inventory.py            # Type hints ve elif
     └── main.py                         # ex7 için test dosyası
 ```
-
----
-
-## ⚙️ Python Nasıl Çalışır?
-
-Python kodu yazıldığından itibaren çalıştırılabilir hale gelene kadar şu aşamalardan geçer:
-
-```
-.py dosyası  →  Bytecode (.pyc)  →  Python Virtual Machine (PVM)  →  Bilgisayar
-  (Kaynak)       (Ara format)         (Yorumlayıcı)                  (İşlemci)
-```
-
-| Aşama | Açıklama |
-|-------|----------|
-| **Python dosyası (.py)** | Bizim yazdığımız insan okunabilir kaynak kod |
-| **Bytecode (.pyc)** | Kaynak kodun makineye yakın ara formata çevrilmiş hali |
-| **Python Virtual Machine** | Bytecode'u okuyup işlemlere çeviren sanal makine |
-| **Bilgisayar** | Gerçek işlemlerin donanım üzerinde çalıştırıldığı katman |
-
----
-
-## 🚀 Kurulum
-
-### 📋 **Ön Gereksinimler**
-
-![Python3](https://img.shields.io/badge/Python-3.x-blue?style=flat-square&logo=python&logoColor=white)
-![Unix](https://img.shields.io/badge/Unix-Compatible-green?style=flat-square&logo=linux&logoColor=white)
-
-- **Python 3**: `python3 --version` ile kontrol edilebilir
-- **Unix-like System**: Linux, macOS, WSL
-
-### 📥 **Repository Klonlama**
-
-```bash
-git clone https://github.com/skarayil/python_modules.git
-cd python_modules/python00
-```
-
 ---
 
 ## 💻 Kullanım
@@ -355,61 +315,6 @@ Enter your choice:
 # Sadece belirli bir egzersizi test etmek için
 cd ex2
 python3 -c "from ft_plot_area import ft_plot_area; ft_plot_area()"
-```
-
-### 🌾 **ex7 Örnek Çıktısı**
-
-```bash
-cd ex7
-python3 main.py
-# Beklenen çıktı:
-# Tomato seeds: 15 packets available
-# Carrot seeds: 8 grams total
-# Lettuce seeds: covers 12 square meters
-# Unknown unit type
-```
-
----
-
-## 🧪 Test Senaryoları
-
-### ✅ **Egzersiz Bazlı Testler**
-
-```bash
-# ex0 — Çıktı kontrolü
-# Beklenen: Hello, Garden Community!
-
-# ex2 — Alan hesabı
-# Girdi: length=5, width=3
-# Beklenen: Plot area: 15
-
-# ex3 — Hasat toplamı
-# Girdi: 10, 20, 30
-# Beklenen: Total harvest: 60
-
-# ex4 — Bitki yaşı
-# Girdi: 45  → Plant needs more time to grow.
-# Girdi: 90  → Plant is ready to harvest!
-
-# ex5 — Sulama
-# Girdi: 1   → Plants are fine
-# Girdi: 5   → Water the plants!
-
-# ex6 — Gün sayımı
-# Girdi: 3   → Day 1, Day 2, Day 3, Harvest time!
-```
-
-### ✅ **ex7 — Tip Kontrolleri**
-
-```python
-ft_seed_inventory("tomato", 15, "packets")
-# → Tomato seeds: 15 packets available
-
-ft_seed_inventory("CARROT", 8, "grams")
-# → Carrot seeds: 8 grams total  (.capitalize() devreye girer)
-
-ft_seed_inventory("basil", 5, "unknown")
-# → Unknown unit type
 ```
 
 ---
