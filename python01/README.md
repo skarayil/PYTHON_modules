@@ -5,7 +5,6 @@
 ![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Module](https://img.shields.io/badge/Module-python01-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
 **Bahçe temasını sürdürerek Python'da sınıf (class), nesne (object), encapsulation, miras alma (inheritance) ve statik/sınıf metotlarına giriş**
 
