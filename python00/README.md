@@ -17,8 +17,6 @@
 
 ## 🎯 Modülün Amacı
 
-<img align="right" alt="Python Garden" width="300" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2M3NXczazJteXdxZ3pwcWFqaGFlZTNhZ2s0cWk3b3k4bDVjdTZmMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/37mOoBDsOjKdFGqXaZ/giphy.gif">
-
 Bu modül, **Python'un temel kavramlarını** bir bahçe simülasyonu teması üzerinden öğretmeyi amaçlar. Her egzersiz, bir öncekinin üzerine inşa edilerek programlamanın temel yapı taşlarını adım adım pekiştirir.
 
 ### 🎓 **Ana Öğrenme Hedefleri:**
