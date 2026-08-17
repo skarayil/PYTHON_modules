@@ -5,7 +5,6 @@
 ![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Module](https://img.shields.io/badge/Module-python00-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
 **Python programlamaya giriş — fonksiyonlar, kullanıcı girdisi, koşullar, döngüler ve tip sistemi**
 
@@ -53,14 +52,6 @@ Bu modül, **Python'un temel kavramlarını** bir bahçe simülasyonu teması ü
 ---
 
 ## ✨ Egzersiz Detayları
-
-<div align="center">
-
-![Functions](https://img.shields.io/badge/Functions-8-brightgreen?style=for-the-badge)
-![Exercises](https://img.shields.io/badge/Exercises-ex0--ex7-blue?style=for-the-badge)
-![Theme](https://img.shields.io/badge/Theme-Garden-orange?style=for-the-badge)
-
-</div>
 
 ### 📋 **Egzersiz Tablosu**
 
@@ -319,67 +310,15 @@ python3 -c "from ft_plot_area import ft_plot_area; ft_plot_area()"
 
 ## 📚 Notlar
 
-### 💡 **Öğrenme İpuçları**
-
-#### 🔑 **Temel Kavramlar**
 - Python'da her satır başındaki girinti (boşluk) kritiktir — yanlış girinti `IndentationError` verir
 - `input()` her zaman `str` döndürür; sayısal işlem yapacaksan `int()` veya `float()` ile dönüştür
 - f-string kullanımı (`f"..."`) klasik string birleştirmeden çok daha okunaklıdır
 - Recursive fonksiyonlarda durdurma koşulunu (base case) unutursan program çöker
 
-#### ⚠️ **Sık Yapılan Hatalar**
-
-| Hata | Sebebi | Çözüm |
-|------|--------|-------|
-| `TypeError: unsupported operand type(s)` | `input()` sonucu `int()`'e çevrilmemiş | `int(input(...))` kullan |
-| `IndentationError` | Yanlış girinti | 4 boşluk veya tek tab kullan |
-| Sonsuz döngü (recursive) | Base case eksik | `if day > days: return` ekle |
-| `NameError` | Fonksiyon çağrılmadan önce tanımlanmamış | `def` bloğunu öne al |
-
-#### 🎯 **Best Practices**
-1. Fonksiyon isimlerini anlamlı yaz: `ft_plot_area` ne yaptığını söylüyor
-2. Type hint ekle: kodun ne beklediği anında anlaşılıyor
-3. `.capitalize()` gibi built-in metodları öğren — çok zaman kazandırır
-4. Her egzersizi `main.py` üzerinden test et
-
----
-
-## 🏆 Modül Başarıları
-
-<div align="center">
-
-![Score](https://img.shields.io/badge/Score-Completed-gold?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-All%20Passed-success?style=for-the-badge)
-![Exercises](https://img.shields.io/badge/Exercises-ex0--ex7-brightgreen?style=for-the-badge)
-
-### 📊 **Modül İstatistikleri**
-
-| Metrik | Değer |
-|--------|-------|
-| **Toplam Egzersiz** | 8 (ex0 – ex7) |
-| **Fonksiyon Sayısı** | 9 (iterative + recursive dahil) |
-| **Öğrenilen Kavram** | fonksiyon, input, koşul, döngü, tip belirtme |
-| **Tema** | 🌱 Bahçe simülasyonu |
-
 </div>
 
----
 
 <div align="center">
-
-### 🎯 **Kazanılan Temel Beceriler**
-
-![Functions](https://img.shields.io/badge/Functions-blue?style=flat-square)
-![Conditionals](https://img.shields.io/badge/Conditionals-green?style=flat-square)
-![Loops](https://img.shields.io/badge/Loops-orange?style=flat-square)
-![Recursion](https://img.shields.io/badge/Recursion-red?style=flat-square)
-![Type Hints](https://img.shields.io/badge/Type%20Hints-purple?style=flat-square)
-
----
-
-**🌱 "Every great program starts with a single function — just like every great garden starts with a single seed."**
-
-*Bu modül, Python'un temellerini sağlam bir şekilde öğrenerek ilerleyen modüllere hazırlık sağlar.*
 
 ---
 
