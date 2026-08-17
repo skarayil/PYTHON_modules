@@ -5,6 +5,7 @@
 ![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Module](https://img.shields.io/badge/Module-python01-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
 **Bahçe temasını sürdürerek Python'da sınıf (class), nesne (object), encapsulation, miras alma (inheritance) ve statik/sınıf metotlarına giriş**
 
@@ -217,5 +218,13 @@ python3 ex6/ft_garden_analytics.py
 - `super()` çağrısı yapılmazsa alt sınıf, ana sınıfın `__init__`'ini veya `show()`'unu otomatik miras almaz — bilinçli olarak çağrılması gerekir.
 
 ---
-
+<div align="center">
+    
 ### 👩‍💻 Created by Sude Naz Karayıldırım
+
+[![42 Profile](https://img.shields.io/badge/42%20Profile-skarayil-black?style=flat-square&logo=42&logoColor=white)](https://profile.intra.42.fr/users/skarayil)
+[![GitHub](https://img.shields.io/badge/GitHub-skarayil-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/skarayil)
+
+**⭐ Eğer bu proje işinize yaradıysa, repo'ya star vermeyi unutmayın!**
+
+</div>
