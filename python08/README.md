@@ -1,84 +1,65 @@
-# Python_Module_08 — Matrix Environment
+# 🧬 Python Module 08 - Matrix Environment (Sanal Ortamlar ve Bağımlılık Yönetimi)
 
-> **Python 3.13+ · Virtual Environments · Dependency Management · Environment Variables**
+<div align="center">
 
-Sanal ortamlar, bağımlılık yönetimi ve environment variable'lar üzerine kurulu bir proje.  
-Her egzersiz bir öncekinin üzerine inşa edilir.
+![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Module](https://img.shields.io/badge/Module-python08-blue?style=for-the-badge)
 
-<img width="3028" height="1510" alt="python08png" src="https://github.com/user-attachments/assets/28a59d23-169c-4e44-aeb1-9e2fe65fc4c0" />
+**"Matrix" temasıyla sanal ortamlar, bağımlılık yönetimi ve environment variable'lar**
 
----
-
-## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)
-
-### **ex0 / Sanal Ortam Kontrolü (`construct.py`)**
-* **Ne Öğrendim?** Python'da **virtual environment (sanal ortam)** kavramı ve neden gerekli olduğu.
-* **Adım Adım:** Program çalıştırıldığında `VIRTUAL_ENV` ortam değişkenini kontrol ediyor. Eğer sanal ortam aktifse "Welcome to the construct" mesajı çıkıyor, kurulu paketlerin yükleneceği dizin gösteriliyor. Aktif değilse uyarı vererek nasıl sanal ortam kurulacağı adım adım açıklanıyor.
-
-### **ex1 / Bağımlılık Yönetimi (`loading.py`)**
-* **Ne Öğrendim?** Üçüncü parti kütüphaneleri kontrol etmek, `pyproject.toml` ve `requirements.txt` ile bağımlılıkları tanımlamak.
-* **Adım Adım:** `pandas`, `numpy`, `matplotlib` kütüphanelerinin yüklü olup olmadığı `importlib.util.find_spec` ile kontrol ediliyor. Eksik paket varsa kurulum komutu gösteriliyor. Hepsi mevcutsa verilerle analiz yapılıp görsel olarak `matrix_analysis.png` dosyasına kaydediliyor.
-
-### **ex2 / Environment Variables (`oracle.py`)**
-* **Ne Öğrendim?** Hassas bilgileri (API anahtarı, veri tabanı URL'i vb.) kodun içine yazmak yerine `.env` dosyasında saklamak ve `python-dotenv` ile okumak.
-* **Adım Adım:** `.env.example` şablonundan `.env` dosyası oluşturuluyor. `load_dotenv()` ile değişkenler yükleniyor. `MATRIX_MODE`, `API_KEY`, `DATABASE_URL` gibi değerler okunup doğrulama ve güvenlik kontrolünden geçiriliyor. API anahtarı eksikse program hata vererek duruyor.
+</div>
 
 ---
 
-## Proje Yapısı
+## 🎯 Modülün Amacı
 
+Bu modül, bir Python projesini sisteme zarar vermeden geliştirmenin üç temel aracını öğretir: **sanal ortamlar** ile paket kurulumunu izole etmek, **bağımlılık yönetimi** ile üçüncü parti kütüphaneleri kontrollü şekilde kullanmak, ve **environment variable'lar** ile hassas bilgileri (API anahtarı gibi) kod dışında tutmak.
+
+### 🎓 Ana Öğrenme Hedefleri
+
+#### 🧪 Sanal Ortam (Virtual Environment)
+- `VIRTUAL_ENV` ortam değişkeninin varlığına bakarak programın izole bir ortamda mı yoksa global sistemde mi çalıştığını tespit etmek
+- `python -m venv` ve `source .../activate` ile bir sanal ortam oluşturup aktif etmek
+
+#### 📦 Bağımlılık Yönetimi
+- `importlib.util.find_spec()` ile bir paketin import etmeden yüklü olup olmadığını kontrol etmek
+- `pyproject.toml` (Poetry) ve `requirements.txt` (pip) ile proje bağımlılıklarını tanımlamak
+- Eksik paket varsa kurulum komutunu kullanıcıya göstermek
+
+#### 🔐 Environment Variables
+- Hassas verileri (`API_KEY`, `DATABASE_URL`) kodun içine yazmak yerine `.env` dosyasında saklamak
+- `python-dotenv` kütüphanesinin `load_dotenv()` fonksiyonuyla bu değişkenleri `os.environ`'a yüklemek
+- `os.environ.get(key, default)` ile bir değişkeni varsayılan değerle güvenle okumak
+- Zorunlu bir değişken (`API_KEY`) eksikse programı `sys.exit(1)` ile kontrollü şekilde durdurmak
+
+---
+
+## ✨ Egzersiz Detayları
+
+### 📋 Egzersiz Tablosu
+
+| Egzersiz | Dosya | Konu | Temel Kavram |
+|----------|-------|------|---------------|
+| **ex0** | `construct.py` | Sanal ortam kontrolü | `os.environ.get("VIRTUAL_ENV")` |
+| **ex1** | `loading.py` | Bağımlılık kontrolü + analiz | `importlib.util.find_spec`, pandas/numpy/matplotlib |
+| **ex2** | `oracle.py` | Environment variables | `python-dotenv`, `.env`, doğrulama |
+
+---
+
+### **ex0 — Sanal Ortam Kontrolü (`construct.py`)**
+
+```python
+venv = os.environ.get("VIRTUAL_ENV")
+status = "Welcome to the construct" if venv else "You're still plugged in"
 ```
-py08/
-├── ex0/
-│   └── construct.py        ← Sanal ortam kontrol scripti
-│
-├── ex1/
-│   ├── loading.py          ← Bağımlılık kontrolü + analiz
-│   ├── pyproject.toml      ← Proje & bağımlılık tanımları (Poetry)
-│   └── requirements.txt    ← pip için bağımlılık listesi
-│
-└── ex2/
-    ├── oracle.py           ← Environment variable okuma & doğrulama
-    ├── .env.example        ← Değişken şablonu (versiyon kontrolüne girer)
-    ├── .gitignore          ← .env dosyasını gizler
-    └── requirements.txt    ← python-dotenv bağımlılığı
-```
-
----
-
-## Çalıştırma
-
-```bash
-# ex0 — Sanal ortam kontrolü
-python3 construct.py
-
-# ex1 — Bağımlılık kontrolü & analiz
-pip install -r requirements.txt
-# veya Poetry ile:
-poetry install
-python3 loading.py
-
-# ex2 — Environment variables
-cp .env.example .env     # .env dosyasını oluştur ve doldur
-pip install -r requirements.txt
-python3 oracle.py
-```
-
----
-
-## Egzersizler
-
-### EX0 — Virtual Environment · `construct.py`
-
-Programın sanal ortam içinde mi yoksa global ortamda mı çalıştığını tespit eder.
 
 | Durum | Mesaj | Açıklama |
-|---|---|---|
-| ✅ Sanal ortam aktif | `Welcome to the construct` | İzole ortam, güvenli paket kurulumu |
-| ❌ Global ortam | `You're still plugged in` | Sistem genelini etkileyebilir, uyarı verilir |
+|-------|-------|----------|
+| ✅ Sanal ortam aktif | `Welcome to the construct` | İzole ortam; `site.getsitepackages()[0]` ile paket kurulum yolu gösterilir |
+| ❌ Global ortam | `You're still plugged in` | Sanal ortam oluşturma adımları terminale yazdırılır |
 
 ```bash
-# Sanal ortam oluşturma ve aktif etme
 python -m venv matrix_env
 source matrix_env/bin/activate   # Unix/macOS
 matrix_env\Scripts\activate      # Windows
@@ -86,54 +67,100 @@ matrix_env\Scripts\activate      # Windows
 
 ---
 
-### EX1 — Dependency Management · `loading.py`
+### **ex1 — Bağımlılık Yönetimi (`loading.py`)**
 
-Gerekli kütüphanelerin (`pandas`, `numpy`, `matplotlib`) yüklü olup olmadığını kontrol eder. Hepsi mevcutsa 1000 rastgele veri noktası üretir, rolling mean hesaplar ve `matrix_analysis.png` olarak kaydeder.
+`check_deps()`, gerekli kütüphanelerin (`pandas`, `numpy`, `matplotlib`) yüklü olup olmadığını `importlib.util.find_spec()` ile kontrol eder:
+
+```python
+spec = importlib.util.find_spec(pkg)
+if spec is None:
+    print(f"  [MISSING] {pkg}")
+else:
+    mod = importlib.import_module(pkg)
+    version = getattr(mod, "__version__", "unknown")
+```
+
+Tüm bağımlılıklar mevcutsa `run_analysis()` çağrılır: `numpy` ile 1000 rastgele veri noktası üretilir, `pandas` ile 50 birimlik hareketli ortalama (rolling mean) hesaplanır ve `matplotlib` ile grafik `matrix_analysis.png` olarak kaydedilir.
 
 | Paket | Görev |
-|---|---|
+|-------|-------|
 | `numpy` | Sayısal veri üretimi |
 | `pandas` | Veri çerçevesi + rolling mean |
-| `matplotlib` | Grafik oluşturma & kaydetme |
-
-```
-check_deps()   →  [OK] pandas / numpy / matplotlib
-get_versions() →  versiyon bilgisi
-run_analysis() →  matrix_analysis.png
-```
+| `matplotlib` | Grafik oluşturma ve kaydetme |
 
 ---
 
-### EX2 — Environment Variables · `oracle.py`
+### **ex2 — Environment Variables (`oracle.py`)**
 
-Hassas konfigürasyon verilerini `.env` dosyasından okur, doğrular ve güvenlik kontrolü yapar.
+```python
+load_dotenv()
+return {
+    "MATRIX_MODE": os.getenv("MATRIX_MODE", "development"),
+    "API_KEY": os.getenv("API_KEY", ""),
+    ...
+}
+```
 
 | Değişken | Varsayılan | Açıklama |
-|---|---|---|
+|----------|------------|----------|
 | `MATRIX_MODE` | `development` | `development` veya `production` |
 | `DATABASE_URL` | `sqlite:///matrix_local.db` | Veri tabanı bağlantı adresi |
-| `API_KEY` | *(boş)* | Zorunlu — eksikse program durur |
+| `API_KEY` | *(boş)* | Zorunlu — eksikse `validate_config()` programı durdurur |
 | `LOG_LEVEL` | `DEBUG` | Loglama seviyesi |
 | `ZION_ENDPOINT` | `http://zion.local:8080` | Ağ uç noktası |
 
-> ⚠️ `.env` dosyası asla versiyonlama sistemine (Git) eklenmez. Şablonu `.env.example` olarak paylaşırsın.
+`validate_config()`, `API_KEY` boşsa ve `MATRIX_MODE` beklenen iki değerden biri değilse hata verip `sys.exit(1)` çağırır. `security_check()` ayrıca `.env` dosyasının var olup olmadığını kontrol eder.
+
+> ⚠️ `.env` dosyası asla Git'e eklenmemelidir (`ex2/.gitignore` bunu zaten hariç tutar); şablonu `.env.example` olarak paylaşılır.
 
 ---
 
-## Temel Kavramlar
+## 📁 Dosya Yapısı
 
-* **`os.environ.get(key)`**: Ortam değişkenini okur; bulunamazsa `None` döner.
-* **`importlib.util.find_spec(pkg)`**: Bir paketin yüklü olup olmadığını import etmeden kontrol eder.
-* **`load_dotenv()`**: `.env` dosyasındaki değişkenleri `os.environ`'a yükler.
-* **`pyproject.toml`**: Modern Python projelerinde bağımlılıkları ve proje meta verilerini tanımlamak için standart dosya formatı.
-* **`requirements.txt`**: `pip install -r` ile hızlı kurulum için kullanılan klasik bağımlılık listesi.
-* **`getattr(mod, "__version__", "unknown")`**: Bir modülün versiyon bilgisini güvenli şekilde okur.
+```
+python08/
+├── ex0/
+│   └── construct.py        ← Sanal ortam kontrol scripti
+│
+├── ex1/
+│   ├── loading.py           ← Bağımlılık kontrolü + analiz
+│   ├── pyproject.toml       ← Proje & bağımlılık tanımları (Poetry)
+│   └── requirements.txt     ← pip için bağımlılık listesi
+│
+└── ex2/
+    ├── oracle.py             ← Environment variable okuma & doğrulama
+    ├── .env.example          ← Değişken şablonu (versiyon kontrolüne girer)
+    ├── .gitignore             ← .env dosyasını gizler
+    └── requirements.txt       ← python-dotenv bağımlılığı
+```
 
 ---
 
-## Doğrulama
+## 💻 Kullanım
 
 ```bash
-python3 -m flake8 ex0/ ex1/ ex2/
-python3 -m mypy   ex0/ ex1/ ex2/ --strict
+# ex0 — Sanal ortam kontrolü
+python3 ex0/construct.py
+
+# ex1 — Bağımlılık kontrolü & analiz
+pip install -r ex1/requirements.txt   # veya: cd ex1 && poetry install
+python3 ex1/loading.py
+
+# ex2 — Environment variables
+cp ex2/.env.example ex2/.env          # .env dosyasını oluştur ve doldur
+pip install -r ex2/requirements.txt
+python3 ex2/oracle.py
 ```
+
+---
+
+## 📚 Notlar
+
+- `os.environ.get(key)`: ortam değişkenini okur; bulunamazsa `None` döner.
+- `importlib.util.find_spec(pkg)`: bir paketin yüklü olup olmadığını, onu import etmeden kontrol eder.
+- `load_dotenv()`: `.env` dosyasındaki değişkenleri `os.environ`'a yükler; `.env` dosyası bulunamazsa sessizce hiçbir şey yapmaz (bu yüzden `security_check()` ayrıca dosyanın varlığını kontrol eder).
+- `getattr(mod, "__version__", "unknown")`: bir modülün versiyon bilgisini, `__version__` özniteliği yoksa hata vermeden okur.
+
+---
+
+### 👩‍💻 Created by Sude Naz Karayıldırım

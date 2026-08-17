@@ -1,37 +1,171 @@
-# Python_Module_09 - Uzay Yolculuğu (OOP - Nesne Yönelimli Programlama) 🚀
+# 🚀 Python Module 09 - Uzay Yolculuğu (Pydantic ile Veri Doğrulama)
 
-Selam! Şimdiye kadar verileri değişkenlerde, işleri fonksiyonlarda tuttuk. Ama ya bu ikisini birleştirip akıllı nesneler yaratmak istersek? İşte yazılım dünyasının kalbi OOP'ye (Object-Oriented Programming) bir uzay gemisi temasıyla dalış yaptığım yer burası. Gerçek dünyayı koda dökmek hiç bu kadar mantıklı gelmemişti!
+<div align="center">
 
-## 🎯 Bu Modülde Asıl Öğrenmemiz Gerekenler
+![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Module](https://img.shields.io/badge/Module-python09-blue?style=for-the-badge)
 
-Bu modülü bitirdiğinizde şunlar rüyalarınıza girecek kadar netleşmeli:
-1.  **Sınıf (Class) ve Nesne (Object) Mantığı:** Sınıfın bir kalıp/şablon, nesnenin ise o kalıptan üretilmiş gerçek ürünler olması durumu.
-2.  **`__init__` (Constructor/Yapıcı Metot):** Bir nesne yaratıldığı ilk saniyede sahip olacağı özellikleri (Attributes) tanımlayan o sihirli fonksiyon.
-3.  **`self` Kavramı:** Bir sınıfın içindeki değişkenlere dışarıdan değil, "benim değişkenim" diyerek erişebilme büyüsü.
-4.  **Miras Alma (Inheritance):** Kodu tekrar yazmak yerine, Ana Sınıfın özelliklerini Alt Sınıflara (Child Classes) aktarıp onlara ekstra yetenekler katabilmek.
-5.  **Metotlar (Methods):** Nesnelerin sadece veri tutmakla kalmayıp, kendi içlerindeki fonksiyonlarla işlem (hareket/eylem) yapabilmesi.
+**Uzay istasyonu / uzaylı temas raporu / görev mürettebatı senaryolarıyla Pydantic tabanlı veri doğrulama**
 
----
-
-## 🧠 Teknik ve Metaforik Bakış
-
-*   **Teknik Olarak:** OOP'nin temeli Veri (Data/Attributes) ve İşlevi (Methods) tek bir çatı (Class) altında birleştirmektir. Global değişkenleri ortadan kaldırıp, veriyi nesnelerin içine kapsüller (Encapsulation). Miras alma ise DRY (Don't Repeat Yourself) prensibinin en zirve noktasıdır. `super().__init__()` çağrısıyla ana sınıfın yapıcısı tetiklenerek bellek israfı ve kod tekrarı engellenir.
-*   **Metaforik Olarak:** Class (Sınıf) bir araba çizimidir/planıdır. Bu çizime binemezsin, sadece kağıt üzerindedir. Ancak fabrikaya gidip o plandan kırmızı bir "Araba" üretirsen, o artık bir Object (Nesnedir). `__init__` fabrikadaki üretim anıdır; rengine orada karar verirsin. Miras alma ise "Araba" çizimini alıp, üstüne bir çizgi daha ekleyip "Kamyonet" yapmaktır; lastikleri tekrar baştan icat etmezsin.
+</div>
 
 ---
 
-## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)
+## 🎯 Modülün Amacı
 
-Eğer OOP'ye ilk defa bulaşıyorsan, bu adımları takip etmelisin:
+Bu modül, elle yazılan `if h < 0: ...` gibi doğrulama kodlarının yerine **Pydantic**'in `BaseModel` sınıfını kullanarak veri doğrulamayı nasıl bildirimsel (declarative) şekilde tanımlayacağımızı öğretir. Alan tipleri, sınır değerleri (`ge`/`le`, `min_length`/`max_length`) ve alanlar arası iş kuralları (`model_validator`) ile geçersiz veri, nesne oluşturulduğu anda otomatik olarak reddedilir.
 
-### **ex0 / Uzay İstasyonu (Class ve `__init__`)**
-*   **Ne Öğrendim?** İlk nesnemi yaratmak.
-*   **Adım Adım:** `class SpaceStation:` diyerek boş bir kalıp oluşturdum. İçine `def __init__(self, isim):` ekledim. Böylece `istasyon = SpaceStation("Alfa")` dediğim an istasyonum oluştu ve `self.isim = isim` ile kendi adını beynine kazıdı.
+### 🎓 Ana Öğrenme Hedefleri
 
-### **ex1 / Uzaylı Teması (Metotlar / Eylemler)**
-*   **Ne Öğrendim?** Nesnelerin tepki vermesi.
-*   **Adım Adım:** Sadece adını bilen bir istasyon yetmez. Sınıfın içine `def kalkan_ac(self):` adında bir metot yazdım. Bu sayede `istasyon.kalkan_ac()` komutunu verdiğimde, istasyon kendi içindeki "kalkan_durumu" değişkenini `True` yaptı. Nesnemiz hayata döndü!
+#### 📐 `BaseModel` ve `Field`
+- Pydantic'in `BaseModel` sınıfından türeyerek veri şeması (schema) tanımlamak
+- `Field(..., ge=..., le=..., min_length=..., max_length=...)` ile bir alanın zorunlu olup olmadığını ve sınır değerlerini belirtmek
+- `Optional[str]` ile isteğe bağlı alanlar tanımlamak, varsayılan değer (`is_active: bool = True`) atamak
 
-### **ex2 / Uzay Mürettebatı (Miras Alma - Inheritance)**
-*   **Ne Öğrendim?** Kodu tekrar etmekten kurtulmak.
-*   **Adım Adım:** Bir ana sınıf yazdım: `CrewMember` (Mürettebat). Nefes alma, yemek yeme gibi özellikleri var. Sonra `class Captain(CrewMember):` diyerek bir Kaptan sınıfı yarattım. Kaptan, mürettebatın her şeyini otomatik miras aldı! Üstüne sadece gemiyi uçurma yeteneği (`pilot_ship()`) ekledim. Aynı şekilde `Engineer` sınıfı üretip ona da tamir yeteneği ekledim. Kodu baştan aşağı tekrar yazmadım!
+#### 🏷️ `Enum` ile Kısıtlı Değer Kümeleri
+- `class Rank(str, Enum):` gibi hem `str` hem `Enum`'dan türeyen sınıflarla, bir alanın yalnızca belirli önceden tanımlı değerleri alabilmesini sağlamak (`cadet`, `officer`, `lieutenant`, ...)
+
+#### 🔗 `model_validator` ile İş Kuralları
+- `@model_validator(mode="after")` dekoratörüyle, tüm alanlar tek tek doğrulandıktan **sonra** birden fazla alanı birlikte kontrol eden özel kurallar yazmak
+- Kural ihlalinde `raise ValueError(...)` fırlatarak Pydantic'in bunu otomatik olarak bir doğrulama hatasına çevirmesini sağlamak
+
+#### 🧩 İç İçe Modeller
+- Bir modelin başka bir modeli içeren bir liste alanına sahip olması (`crew: List[CrewMember]`) ve iç modelin de kendi doğrulama kurallarına tabi olması
+
+---
+
+## ✨ Egzersiz Detayları
+
+### 📋 Egzersiz Tablosu
+
+| Egzersiz | Dosya | Model(ler) | Temel Kavram |
+|----------|-------|------------|---------------|
+| **ex0** | `space_station.py` | `SpaceStation` | Temel `BaseModel` + `Field` sınırları |
+| **ex1** | `alien_contact.py` | `AlienContact`, `ContactType` | `Enum`, `model_validator` ile iş kuralları |
+| **ex2** | `space_crew.py` | `CrewMember`, `SpaceMission`, `Rank` | İç içe modeller (`List[CrewMember]`), çoklu iş kuralı |
+
+---
+
+### **ex0 — Temel Doğrulama (`space_station.py`)**
+
+```python
+class SpaceStation(BaseModel):
+    station_id: str = Field(..., min_length=3, max_length=10)
+    crew_size: int = Field(..., ge=1, le=20)
+    power_level: float = Field(..., ge=0.0, le=100.0)
+    oxygen_level: float = Field(..., ge=0.0, le=100.0)
+    last_maintenance: datetime
+    is_operational: bool = True
+    notes: Optional[str] = Field(None, max_length=200)
+```
+
+`SpaceStation(...)` çağrısı, verilen her alanı otomatik olarak tipine ve `Field` içinde belirtilen sınırlara göre doğrular; örneğin `crew_size=25` verilirse (üst sınır 20) Pydantic bir `ValidationError` fırlatır.
+
+---
+
+### **ex1 — Enum ve İş Kuralları (`alien_contact.py`)**
+
+```python
+class ContactType(str, Enum):
+    radio = "radio"
+    visual = "visual"
+    physical = "physical"
+    telepathic = "telepathic"
+```
+
+Alan bazlı doğrulamanın (`Field`) yetmediği durumlar için `@model_validator(mode="after")` kullanılır — bu, tüm alanlar geçerli olduktan **sonra** çalışan ve birden fazla alanı birlikte kontrol edebilen bir doğrulayıcıdır:
+
+```python
+@model_validator(mode="after")
+def validate_business_rules(self) -> "AlienContact":
+    if not self.contact_id.startswith("AC"):
+        raise ValueError('Contact ID must start with "AC"')
+
+    if self.contact_type == ContactType.physical and not self.is_verified:
+        raise ValueError("Physical contact reports must be verified")
+
+    if self.contact_type == ContactType.telepathic and self.witness_count < 3:
+        raise ValueError("Telepathic contact requires at least 3 witnesses")
+
+    if self.signal_strength > 7.0 and not self.message_received:
+        raise ValueError("Strong signals (>7.0) should include received messages")
+
+    return self
+```
+
+Uygulanan iş kuralları:
+
+| Kural | Açıklama |
+|-------|----------|
+| ID formatı | `contact_id` `"AC"` ile başlamalı |
+| Fiziksel temas | `physical` tipi temaslar `is_verified=True` olmalı |
+| Telepatik temas | En az 3 tanık (`witness_count >= 3`) gerekir |
+| Güçlü sinyal | `signal_strength > 7.0` ise `message_received` dolu olmalı |
+
+---
+
+### **ex2 — İç İçe Modeller (`space_crew.py`)**
+
+```python
+class Rank(str, Enum):
+    cadet = "cadet"
+    officer = "officer"
+    lieutenant = "lieutenant"
+    captain = "captain"
+    commander = "commander"
+
+class SpaceMission(BaseModel):
+    mission_id: str = Field(..., min_length=5, max_length=15)
+    crew: List[CrewMember] = Field(..., min_length=1, max_length=12)
+    duration_days: int = Field(..., ge=1, le=3650)
+    ...
+```
+
+`SpaceMission`, kendi alanlarının yanı sıra bir `CrewMember` listesi içerir — her bir mürettebat üyesi de kendi `Field` sınırlarına göre ayrıca doğrulanır. `@model_validator` ile eklenen görev bazlı kurallar:
+
+| Kural | Açıklama |
+|-------|----------|
+| ID formatı | `mission_id` `"M"` ile başlamalı |
+| Liderlik | Mürettebatta en az bir `commander` veya `captain` bulunmalı |
+| Deneyim | `duration_days > 365` ise mürettebatın en az %50'si `years_experience >= 5` olmalı |
+| Aktiflik | Mürettebatta `is_active=False` olan kimse bulunmamalı |
+
+---
+
+## 📁 Dosya Yapısı
+
+```
+python09/
+├── ex0/
+│   └── space_station.py    # BaseModel + Field temelleri
+├── ex1/
+│   └── alien_contact.py    # Enum + model_validator ile iş kuralları
+└── ex2/
+    └── space_crew.py       # İç içe modeller + çoklu iş kuralı
+```
+
+---
+
+## 💻 Kullanım
+
+```bash
+python3 ex0/space_station.py
+python3 ex1/alien_contact.py
+python3 ex2/space_crew.py
+```
+
+Her dosyanın `main()` fonksiyonu, kuralları sağlayan geçerli bir örnek oluşturup alanlarını ekrana yazdırır.
+
+---
+
+## 📚 Notlar
+
+- Bu modül, standart Python kütüphanesinde yer almayan **`pydantic`** paketini gerektirir (`pip install pydantic`).
+- `Field(..., ...)` içindeki `...` (Ellipsis), o alanın **zorunlu** olduğu, varsayılan değeri olmadığı anlamına gelir.
+- `model_validator(mode="after")`, alan bazlı (`Field`) doğrulamalardan **sonra** çalışır; bu yüzden `self.contact_type` gibi alanlara güvenle erişilebilir — aksi halde henüz doğrulanmamış/eksik olabilirlerdi.
+- Bir doğrulama kuralı ihlal edildiğinde Pydantic, `raise ValueError(...)` çağrısını yakalayıp kendi `ValidationError` istisnasına dönüştürür.
+
+---
+
+### 👩‍💻 Created by Sude Naz Karayıldırım

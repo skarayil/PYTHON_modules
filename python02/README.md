@@ -1,45 +1,169 @@
-# Python_Module_02 - Hata Yakalama Sanatı (Exceptions) 🚨
+# 🚨 Python Module 02 - Hata Yakalama Sanatı (Exceptions)
 
-Selam! Yazılımda her şey yolunda gitmez. Kullanıcı harf yerine sayı girer, internet kopar, dosya bulunamaz... İşte programın aniden kırmızı yazılar fırlatıp patlamasını (crash) engellediğimiz ve kontrolü ele aldığımız yer burası. Bu modülde hatalara kafa tutmayı öğrendim.
+<div align="center">
 
-## 🎯 Bu Modülde Asıl Öğrenmemiz Gerekenler
+![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Module](https://img.shields.io/badge/Module-python02-blue?style=for-the-badge)
 
-Bu modülü bitirdiğinizde şunlara tam anlamıyla hakim olmalısınız:
-1.  **Try-Except Blokları:** Hata üretebilecek riskli kodları koruma altına almak.
-2.  **Özel Hata Yakalama:** Tüm hataları körü körüne yakalamak yerine (`except Exception:` kullanmak çok tehlikelidir), sadece beklediğiniz belirli hataları (`ValueError`, `TypeError` gibi) yakalamak.
-3.  **Kendi Hatanı Fırlatma (`raise`):** Program teknik olarak çökmemiş olsa bile, iş mantığına aykırı bir durum olduğunda (örn: şifrenin çok kısa olması) kendi kontrolümüzle hata fırlatmak.
-4.  **Custom Exceptions:** Python'un yerleşik hatalarının yetersiz kaldığı büyük projelerde, kendi hata sınıflarımızı (Class) yaratmak.
-5.  **Temizlik Aşaması (`finally`):** Kod hata versin veya vermesin, çalışmasını kesinlikle garanti altına aldığımız bloklar oluşturmak.
+**Bahçe temalı sıcaklık ve sulama senaryolarıyla try/except, raise, özel hata sınıfları ve finally**
 
----
-
-## 🧠 Teknik ve Metaforik Bakış
-
-*   **Teknik Olarak:** Bir Exception fırlatıldığında, Python "Call Stack" (çağrı yığını) boyunca geriye doğru bu hatayı yakalayacak bir `except` bloğu arar. Eğer en üste kadar bulamazsa program `Traceback` fırlatır ve kapanır. Exception yakalamak biraz performans maliyetine sahiptir, bu yüzden sadece istisnai durumlar için kullanılmalıdır, normal akış kontrolü (`if-else` yerine) için kullanılmamalıdır.
-*   **Metaforik Olarak:** Bir sirkte akrobat (Kod) ipin üstünde yürüyor. Aşağıda bir güvenlik ağı (Try-Except) var. Akrobat düşerse (Hata/Exception), ağ onu yakalar ve şovun iptal olmasını (Crash) engeller, akrobat gösteriye kaldığı yerden devam edebilir. `Finally` ise, akrobat düşse de düşmese de şov sonunda o ipin oradan toplanmasıdır.
+</div>
 
 ---
 
-## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)
+## 🎯 Modülün Amacı
 
-Eğer hatalarla yeni başa çıkıyorsan, şu adımları izlemelisin:
+Yazılımda her şey planlandığı gibi gitmez: kullanıcı harf yerine sayı girer, dosya bulunamaz, iş kuralı ihlal edilir. Bu modül, programın çökmesini (crash) engelleyip hatayı kontrollü şekilde ele almayı; hatta bazı durumlarda kendi hatanı bilinçli olarak fırlatmayı (`raise`) öğretir.
 
-### **ex0 / Güvenlik Ağı Germek (`try-except`)**
-*   **Ne Öğrendim?** Programın çökmesini önlemek.
-*   **Adım Adım:** Kırılgan olan (mesela matematiksel bir bölme işlemi) kodları `try:` bloğunun içine yaz. Hemen altına `except:` yazarak hata durumunda ne ekrana basılacağını veya ne önlem alınacağını belirle. Program artık kırmızı bir hata mesajı kusup kapanmaz.
+### 🎓 Ana Öğrenme Hedefleri
 
-### **ex1 / Kasten Hata Çıkarmak (`raise`)**
-*   **Ne Öğrendim?** Kurallara uymayan duruma anında itiraz etmek.
-*   **Adım Adım:** Diyelim ki bir sisteme yaş girilecek. Kullanıcı "-5" girdi. Python bunu teknik olarak bir hata görmez çünkü -5 bir tam sayıdır. Ama gerçek hayatta hata! Koduna `if yas < 0:` yazıp altına `raise ValueError("Yaş negatif olamaz!")` yazarak kontrolü sen sağla.
+#### 🛡️ Try-Except Blokları
+- Hata verebilecek riskli kodu (`int(...)`) `try:` bloğuna almak
+- Hatayı `except Exception as e:` ile yakalayıp programın devam etmesini sağlamak
 
-### **ex2 / Her Hataya Ayrı Muamele**
-*   **Ne Öğrendim?** Hatanın tipini bilmek ve ona göre davranmak.
-*   **Adım Adım:** Sadece `except:` yazıp geçme. `except ValueError:` yazarsan sayı dönüştürme hatalarını yakalarsın. Altına bir tane de `except ZeroDivisionError:` eklersen, sıfıra bölme hatasını yakalarsın. Hangi hata geldiyse ilgili bloğa girer!
+#### 🎯 Özel Hata Yakalama
+- Tek bir genel `except Exception:` yerine `ValueError`, `ZeroDivisionError`, `FileNotFoundError`, `TypeError` gibi belirli hata tiplerini ayrı ayrı yakalamak
+- Python'un `match/case` yapısıyla farklı hata senaryoları üretip test etmek
 
-### **ex3 / Kendi Hata Türünü Yaratmak (Custom Exceptions)**
-*   **Ne Öğrendim?** Projeye özel isimlendirilmiş hatalar.
-*   **Adım Adım:** Python'daki `Exception` sınıfından miras alarak boş bir sınıf oluştur. Mesela `class UserBannedError(Exception): pass`. Artık engellenmiş bir kullanıcı sisteme girmeye çalıştığında bu kendi özel isimlendirdiğin hatayı fırlatabilirsin. Kodu okuyan kişi anında ne olduğunu anlar.
+#### ⚠️ Kendi Hatanı Fırlatmak (`raise`)
+- Teknik olarak geçerli ama iş mantığına aykırı bir durumda (`-5` derece gibi) `raise Exception(...)` ile kontrolü ele almak
 
-### **ex4 / Her Şeye Rağmen Çalışacak Kod (`finally`)**
-*   **Ne Öğrendim?** Arkamı temizlemek.
-*   **Adım Adım:** `try-except` bloğunun en sonuna `finally:` ekle. Kod başarıyla bitse de çalışır, hata verip `except`'e düşse de çalışır. Özellikle açık kalan veritabanı bağlantılarını veya dosyaları kapatmak için mükemmel bir yerdir.
+#### 🏷️ Özel Hata Sınıfları (Custom Exceptions)
+- `Exception`'dan miras alarak proje için anlamlı isimlendirilmiş hata sınıfları (`PlantError`, `WaterError`) tanımlamak
+- Bu sınıfları ortak bir üst sınıftan (`GardenError`) türeterek tek bir `except GardenError:` ile hepsini yakalayabilmek
+
+#### 🧹 Temizlik Aşaması (`finally`)
+- Hata olsa da olmasa da mutlaka çalışması gereken kodu `finally:` bloğuna yazmak
+
+---
+
+## ✨ Egzersiz Detayları
+
+### 📋 Egzersiz Tablosu
+
+| Egzersiz | Dosya | Konu | Temel Kavram |
+|----------|-------|------|---------------|
+| **ex0** | `ft_first_exception.py` | İlk güvenlik ağı | `try/except` |
+| **ex1** | `ft_raise_exception.py` | Kendi hatanı fırlat | `raise Exception(...)` |
+| **ex2** | `ft_different_errors.py` | Hata tipine göre davran | `except ValueError / ZeroDivisionError / FileNotFoundError / TypeError` |
+| **ex3** | `ft_custom_errors.py` | Kendi hata sınıfların | `class PlantError(GardenError)` |
+| **ex4** | `ft_finally_block.py` | Kesin temizlik | `try/except/finally` |
+
+---
+
+### **ex0 — İlk Güvenlik Ağı (`ft_first_exception.py`)**
+
+```python
+def input_temperature(temp_str: str) -> int:
+    return int(temp_str)
+```
+
+`"25"` gibi geçerli bir string sorunsuz `int()`'e çevrilir; `"abc"` gönderildiğinde oluşan `ValueError`, çağıran taraftaki `try/except Exception as e:` bloğu tarafından yakalanıp programın çökmesi engellenir.
+
+---
+
+### **ex1 — Kendi Hatanı Fırlat (`ft_raise_exception.py`)**
+
+`int()` dönüşümü başarılı olsa bile (örn. `100` veya `-50`), bu değerler bir bitki için mantıksız olduğundan kod bilinçli olarak hata fırlatır:
+
+```python
+if not 0 <= _degree <= 40:
+    if _degree > 40:
+        raise Exception(f"{_degree}°C is too hot for plants (max 40°C)")
+    else:
+        raise Exception(f"{_degree}°C is too cold for plants (min 0°C)")
+```
+
+---
+
+### **ex2 — Hata Tipine Göre Davran (`ft_different_errors.py`)**
+
+`match/case` ile beş farklı riskli işlem (`int("abc")`, `1/0`, olmayan dosya açma, `"a" + 1`, ...) üretilir ve her biri kendi spesifik `except` bloğuyla yakalanır:
+
+```python
+except ValueError as e:
+    print(f"Caught ValueError: {e}")
+except ZeroDivisionError as e:
+    print(f"Caught ZeroDivisionError: {e}")
+except FileNotFoundError as e:
+    print(f"Caught FileNotFoundError: {e}")
+except TypeError as e:
+    print(f"Caught TypeError: {e}")
+```
+
+Bu, tek bir kör `except:` yazmak yerine hatanın tipine göre farklı davranabilmeyi gösterir.
+
+---
+
+### **ex3 — Kendi Hata Sınıfların (`ft_custom_errors.py`)**
+
+```python
+class GardenError(Exception):
+    def __init__(self, message: str = "Garden error") -> None:
+        super().__init__(message)
+
+class PlantError(GardenError):
+    ...
+
+class WaterError(GardenError):
+    ...
+```
+
+`PlantError` ve `WaterError` ayrı ayrı yakalanabildiği gibi, ortak üst sınıfları `GardenError` üzerinden tek bir `except GardenError as e:` bloğuyla da yakalanabilir — bu, büyük projelerde hata hiyerarşisi kurmanın temelidir.
+
+---
+
+### **ex4 — Kesin Temizlik (`ft_finally_block.py`)**
+
+```python
+try:
+    for plant in plants_list:
+        water_plant(plant)
+except PlantError as e:
+    print(f"Caught PlantError: {e}")
+    return
+finally:
+    print("Closing watering system")
+```
+
+`water_plant()`, ismi büyük harfle başlamayan bir bitki adı geldiğinde `PlantError` fırlatır. Döngü hata sebebiyle erken sonlansa bile `finally` bloğu — "sulama sistemini kapat" — her koşulda çalışır.
+
+---
+
+## 📁 Dosya Yapısı
+
+```
+python02/
+├── ex0/
+│   └── ft_first_exception.py   # try/except temelleri
+├── ex1/
+│   └── ft_raise_exception.py   # raise ile kendi hatanı fırlatma
+├── ex2/
+│   └── ft_different_errors.py  # Hata tipine özel except blokları
+├── ex3/
+│   └── ft_custom_errors.py     # GardenError, PlantError, WaterError
+└── ex4/
+    └── ft_finally_block.py     # try/except/finally
+```
+
+---
+
+## 💻 Kullanım
+
+```bash
+python3 ex0/ft_first_exception.py
+python3 ex3/ft_custom_errors.py
+```
+
+---
+
+## 📚 Notlar
+
+- `except Exception:` gibi çok genel bir yakalama, hatanın gerçek nedenini gizleyebilir; mümkün olduğunca spesifik hata tipleri (`ValueError`, `ZeroDivisionError`, ...) yakalanmalıdır.
+- `raise` ile fırlatılan bir hata, onu yakalayan bir `except` bulunana kadar çağrı yığınında (call stack) geriye doğru yayılır; hiçbir yerde yakalanmazsa program `Traceback` ile durur.
+- `finally` bloğu, `try` içinde `return` çalışsa bile mutlaka çalışır — bu yüzden dosya/bağlantı kapatma gibi işlemler için idealdir.
+
+---
+
+### 👩‍💻 Created by Sude Naz Karayıldırım

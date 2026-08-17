@@ -1,46 +1,129 @@
-# DataDeck — Abstract Card Architecture
+# 🃏 Python Module 07 - DataDeck (Soyut Kart Mimarisi / Design Patterns)
 
-> **Python 3.10+ · flake8 · mypy --strict**
+<div align="center">
 
-Creature tabanlı bir kart oyunu altyapısı. Üç tasarım desenini (Abstract Factory, Capability/Mixin, Strategy) katmanlı biçimde uygular.
+![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Module](https://img.shields.io/badge/Module-python07-blue?style=for-the-badge)
 
----
+**Creature tabanlı bir kart oyunu altyapısı üzerinden Abstract Factory, Capability/Mixin ve Strategy tasarım desenleri**
 
-## 📂 Adım Adım Ne Yaptım? (Yeni Başlayanlar İçin Rehber)
-
-Eğer Design Patterns dünyasına ilk adımını atıyorsan, bu süreci şöyle incelemelisin:
-
-### **ex0 / Abstract Factory (`battle.py`)**
-*   **Ne Öğrendim?** Nesne üretimini standartlaştırmak.
-*   **Adım Adım:** Flameling isimli yaratığı elimle oluşturmadım. Bir `FlameFactory` yazdım. Bu fabrika bana ateş elementli baz yaratıklar veya gelişmiş (`Pyrodon`) yaratıklar verebiliyor. `AquaFactory` de aynı komutlarla su yaratıkları veriyor. Hangi fabrikayı kullandığımı umursamadan kod yazabildim (Polimorfizm).
-
-### **ex1 / Capabilities / Mixin (`capacitor.py`)**
-*   **Ne Öğrendim?** Eklenti (Plugin) mantığı ile yetenek kazandırmak.
-*   **Adım Adım:** Yaratıklara yeni bir sınıf türetmeden "Heal" (İyileştirme) ve "Transform" (Dönüşüm) özellikleri ekledim. `Shiftling` yaratığı normalde sadece vururken, Transform yeteneği sayesinde `attack() → transform() → attack() → revert()` döngüsüne sahip oldu. Özellikler yaratıktan bağımsız yaşıyor!
-
-### **ex2 / Strategy Pattern (`tournament.py`)**
-*   **Ne Öğrendim?** Algoritmayı dışarıdan yönetmek.
-*   **Adım Adım:** Karakterin saldırı mantığını içine yazmadım. Dışarıda `NormalStrategy`, `AggressiveStrategy`, `DefensiveStrategy` isimli beyinler tasarladım. Karakter savaşa girerken ona bir beyin atadım. Karakter sadece `execute()` dedi, gerisini o an kafasındaki beyin halletti.
+</div>
 
 ---
 
-## 🎨 Proje Görselleri ve Yapısı
+## 🎯 Modülün Amacı
 
-**Proje Diyagramları:**
-<img width="3388" height="1372" alt="Ekran Görüntüsü - 2026-06-23 12-25-36" src="https://github.com/user-attachments/assets/715d9935-77df-49fd-b948-6caabeeec43d" />
-<img width="3494" height="1371" alt="Ekran Görüntüsü - 2026-06-23 14-05-47" src="https://github.com/user-attachments/assets/57c14873-265b-4d8c-bb27-281876047232" />
-<img width="949" height="368" alt="Ekran Görüntüsü - 2026-06-23 14-26-30" src="https://github.com/user-attachments/assets/7aef9560-2b9b-4ae6-a49e-b9b7b8b67ace" />
+Bu modül, önceki modüllerdeki temel OOP bilgisinin (`class`, miras alma) üzerine üç klasik **tasarım desenini (design pattern)** katmanlı biçimde inşa eder: nesne üretimini standartlaştırmak (Abstract Factory), yaratıklara sınıftan bağımsız yetenekler eklemek (Capability/Mixin) ve savaş mantığını dışarıdan yönetmek (Strategy).
 
+### 🎓 Ana Öğrenme Hedefleri
 
+#### 🏭 Abstract Factory
+- Soyut bir `CreatureFactory` sınıfı tanımlayıp somut fabrikaların (`FlameFactory`, `AquaFactory`) onu implemente etmesini sağlamak
+- Hangi fabrika kullanıldığını umursamadan aynı kodla (`test_factory()`) farklı yaratık aileleri üretebilmek (polimorfizm)
 
+#### 🧩 Capabilities / Mixin
+- Yaratıklara yeni bir sınıf türetmeden, bağımsız `HealCapability` ve `TransformCapability` sınıflarını çoklu miras (`class Sproutling(Creature, HealCapability)`) ile eklemek
+- `isinstance(creature, HealCapability)` ile bir yaratığın hangi yetenek(ler)e sahip olduğunu çalışma zamanında kontrol etmek
 
+#### ♟️ Strategy Pattern
+- Saldırı mantığını yaratığın içine gömmek yerine, dışarıda ayrı "beyin" sınıfları (`NormalStrategy`, `AggressiveStrategy`, `DefensiveStrategy`) olarak tasarlamak
+- Bir yaratığa savaşa girerken bir strateji atamak; yaratık sadece `execute()`/`act()` der, gerisini o an atanmış strateji halleder
+- Uyumsuz bir strateji-yaratık kombinasyonunda (`ValueError`) turnuvanın kontrollü şekilde durmasını sağlamak
 
 ---
 
-## Proje Yapısı
+## ✨ Egzersiz Detayları
+
+### 📋 Egzersiz Tablosu
+
+| Egzersiz | Dosya | Desen | Temel Kavram |
+|----------|-------|-------|---------------|
+| **ex0** | `ex0/creature.py`, `ex0/factory.py`, `battle.py` | Abstract Factory | `ABC`, `@abstractmethod`, polimorfizm |
+| **ex1** | `ex1/capability.py`, `ex1/creature.py`, `ex1/factory.py`, `capacitor.py` | Capability / Mixin | Çoklu miras, `isinstance` |
+| **ex2** | `ex2/strategy.py`, `tournament.py` | Strategy | Davranışı dışarıdan enjekte etme |
+
+---
+
+### **ex0 — Abstract Factory (`battle.py`)**
+
+Yaratıklar doğrudan elle oluşturulmaz; bir fabrikaya sipariş verilir:
+
+```python
+class CreatureFactory(ABC):
+    @abstractmethod
+    def create_base(self) -> Creature: ...
+    @abstractmethod
+    def create_evolved(self) -> Creature: ...
+
+class FlameFactory(CreatureFactory):
+    def create_base(self) -> Creature:
+        return Flameling()
+    def create_evolved(self) -> Creature:
+        return Pyrodon()
+```
+
+| Aile | Temel | Gelişmiş |
+|------|-------|----------|
+| 🔥 Ateş | `Flameling` | `Pyrodon` |
+| 💧 Su | `Aquabub` | `Torragon` |
+
+`test_factory()` fonksiyonu, hangi fabrika (`FlameFactory` ya da `AquaFactory`) verilirse verilsin aynı şekilde çalışır — bu polimorfizmin somut bir örneğidir.
+
+---
+
+### **ex1 — Capabilities / Mixin (`capacitor.py`)**
+
+Yaratıklara yeni bir sınıf türetmeden "Heal" (iyileştirme) ve "Transform" (dönüşüm) özellikleri eklenir:
+
+```python
+class Shiftling(Creature, TransformCapability):
+    def attack(self) -> str:
+        if self.transformed:
+            return "Shiftling performs a boosted strike!"
+        return "Shiftling attacks normally."
+```
+
+| Yetenek | Yaratıklar | Metotlar |
+|---------|-----------|----------|
+| 🌿 Heal | `Sproutling`, `Bloomelle` | `attack()` + `heal()` |
+| 🔀 Transform | `Shiftling`, `Morphagon` | `attack()` → `transform()` → `attack()` → `revert()` |
+
+Özellikler `Creature`'dan bağımsız yaşar; bir yaratığın hangi yeteneğe sahip olduğu `isinstance(creature, HealCapability)` ile kontrol edilir.
+
+---
+
+### **ex2 — Strategy Pattern (`tournament.py`)**
+
+Karakterin saldırı mantığı kendi içine yazılmaz; dışarıda tasarlanan bir "beyin" ona atanır:
+
+```python
+class AggressiveStrategy(BattleStrategy):
+    def is_valid(self, creature: Creature) -> bool:
+        return isinstance(creature, TransformCapability)
+
+    def act(self, creature: Creature) -> None:
+        if not self.is_valid(creature):
+            raise ValueError(f"Invalid Creature '{creature.name}' for this aggressive strategy")
+        print(creature.transform())
+        print(creature.attack())
+        print(creature.revert())
+```
+
+| Strateji | Uyumlu Yaratık | Eylem |
+|----------|-----------------|-------|
+| `NormalStrategy` | Hepsi | `attack()` |
+| `AggressiveStrategy` | `TransformCapability` | `transform()` → `attack()` → `revert()` |
+| `DefensiveStrategy` | `HealCapability` | `attack()` → `heal()` |
+
+`battle()` fonksiyonu, verilen tüm rakip çiftlerini (`itertools` gerektirmeden `i`, `j` döngüsüyle) bir kez eşleştirir; uyumsuz bir kombinasyon `ValueError` fırlattığında turnuva `except ValueError` ile yakalanıp kontrollü şekilde durur.
+
+---
+
+## 📁 Dosya Yapısı
 
 ```
-py07/
+python07/
 ├── ex0/                    ← Abstract Factory
 │   ├── creature.py         Tüm yaratık sınıfları
 │   ├── factory.py          Fabrika sınıfları
@@ -56,24 +139,14 @@ py07/
 │   ├── strategy.py         Normal / Aggressive / Defensive strateji
 │   └── __init__.py
 │
-├── battle.py               python3 battle.py      → ex0 testi
-├── capacitor.py            python3 capacitor.py   → ex1 testi
-├── tournament.py           python3 tournament.py  → ex2 testi
-│
-├── anlatim/                Türkçe dokümantasyon
-│   ├── ana_amac.md         Her exercise'ın kısa amacı
-│   ├── genel_bakis.md      Dosya akışları ve metaforlu açıklamalar
-│   ├── ex0_anlatim.md      EX0 detaylı anlatım
-│   ├── ex1_anlatim.md      EX1 detaylı anlatım
-│   ├── ex2_anlatim.md      EX2 detaylı anlatım
-│   └── yorum.md            Satır satır yorum açıklamaları
-│
-└── .gitignore
+├── battle.py                python3 battle.py      → ex0 testi
+├── capacitor.py              python3 capacitor.py   → ex1 testi
+└── tournament.py              python3 tournament.py  → ex2 testi
 ```
 
 ---
 
-## Çalıştırma
+## 💻 Kullanım
 
 ```bash
 python3 battle.py       # EX0 — Abstract Factory
@@ -83,63 +156,7 @@ python3 tournament.py   # EX2 — Strategy + Turnuva
 
 ---
 
-## Exercises
-
-### EX0 — Abstract Factory · `battle.py`
-
-Yaratıkları doğrudan sen üretmiyorsun, **fabrikaya sipariş veriyorsun.**
-
-| Aile | Temel | Gelişmiş |
-|---|---|---|
-| 🔥 Ateş | Flameling | Pyrodon |
-| 💧 Su | Aquabub | Torragon |
-
-```
-FlameFactory → create_base()    → Flameling
-             → create_evolved() → Pyrodon
-AquaFactory  → create_base()    → Aquabub
-             → create_evolved() → Torragon
-```
-
-> Aynı `test_factory()` fonksiyonu her iki fabrika için değişmeden çalışır — **polimorfizm**.
-
----
-
-### EX1 — Capabilities · `capacitor.py`
-
-Ex0'ın üzerine yaratıklara **aksesuar** (yetenek) takılır. Yetenekler `Creature`'dan bağımsızdır.
-
-| Yetenek | Yaratıklar | Metotlar |
-|---|---|---|
-| 🌿 Heal | Sproutling, Bloomelle | `attack()` + `heal()` |
-| 🔀 Transform | Shiftling, Morphagon | `attack()` → `transform()` → `attack()` → `revert()` |
-
-```
-Shiftling.transform()  →  transformed = True
-Shiftling.attack()     →  "boosted strike!"   ← aynı metot, farklı çıktı
-Shiftling.revert()     →  transformed = False
-```
-
----
-
-### EX2 — Strategy Pattern · `tournament.py`
-
-Ex0 + Ex1'in üzerine **strateji sistemi** ve **turnuva** eklenir.
-
-| Strateji | Uyumlu Yaratık | Eylem |
-|---|---|---|
-| NormalStrategy | Hepsi | `attack()` |
-| AggressiveStrategy | TransformCapability | `transform()` → `attack()` → `revert()` |
-| DefensiveStrategy | HealCapability | `attack()` → `heal()` |
-
-```
-Uyumsuz kombinasyon → ValueError → turnuva durur
-3 rakip             → 3 maç (her çift bir kez)
-```
-
----
-
-## Kural Zinciri
+## 🔗 Kural Zinciri
 
 ```
 ex0  ──►  Creature + Factory sistemi kurulur
@@ -153,7 +170,15 @@ ex2  ──►  ex0 + ex1'i alır, Strategy + Tournament çalışır
 
 ---
 
-## Doğrulama
+## 📚 Notlar
+
+- `ABC` ve `@abstractmethod`, bir sınıfın doğrudan örneklenemeyeceğini ve alt sınıfların belirli metotları implemente etmek zorunda olduğunu garanti eder.
+- Çoklu miras (`class Sproutling(Creature, HealCapability)`), Python'da MRO (Method Resolution Order) kurallarına göre çözülür; her iki üst sınıfın `__init__`'i de gerektiğinde açıkça çağrılmalıdır.
+- Strategy deseni sayesinde yeni bir strateji eklemek, mevcut `Creature` sınıflarına hiç dokunmadan mümkündür — bu Open/Closed prensibinin bir örneğidir.
+
+---
+
+## ✅ Doğrulama
 
 ```bash
 python3 -m flake8 ex0/ ex1/ ex2/ battle.py capacitor.py tournament.py
@@ -161,5 +186,5 @@ python3 -m mypy   ex0/ ex1/ ex2/ battle.py capacitor.py tournament.py --strict
 ```
 
 ---
-<img width="949" height="368" alt="Ekran Görüntüsü - 2026-06-23 14-26-53" src="https://github.com/user-attachments/assets/ee48b452-31b5-410c-8385-e664b5f82e0f" />
 
+### 👩‍💻 Created by Sude Naz Karayıldırım

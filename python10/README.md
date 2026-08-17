@@ -1,68 +1,202 @@
-# FuncMage Projesi
+# 🔮 Python Module 10 - FuncMage (Fonksiyonel Programlama)
 
-Selam, bu proje Python'da "fonksiyonel programlama" mantığını oturtmak için hazırladığım 5 aşamalı bir çalışma. Klasik döngüler (`for`, `while`) ve upuzun fonksiyonlar yazmak yerine, daha az kodla daha akıllı işler (fonksiyonları birbirine paslamak, sarmalamak, tek satırda çözmek vb.) yapmaya odaklandım. Akılda kalıcı olsun diye de kodların tamamı büyücülük ve sihir teması (mage/spells vb.) üzerinden ilerliyor.
+<div align="center">
 
-Aşağıda aşama aşama neler yaptığımı, hangi mantıkla hangi kodları yazdığımı detaylıca anlattım.
+![42 School](https://img.shields.io/badge/School-42-black?style=for-the-badge&logo=42)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Module](https://img.shields.io/badge/Module-python10-blue?style=for-the-badge)
 
+**Büyücülük/sihir temasıyla lambda, higher-order fonksiyonlar, closure, `functools` ve decorator'lar**
 
-
-<img width="2049" height="1581" alt="Ekran Görüntüsü - 2026-06-26 01-45-43" src="https://github.com/user-attachments/assets/e72d2457-0da2-48ec-ae02-5ef59a2ffb98" />
-
----
-
-## Adım Adım Neler Yaptım?
-
-### 1. Adım: Lambda & Built-ins (`ex0/lambda_spells.py`)
-İlk adımda uzun fonksiyon tanımlamalarından kurtulup isimsiz ve tek satırlık `lambda` fonksiyonlarını kullandım. Bunu Python'un gömülü fonksiyonlarıyla (`map`, `filter`, `sorted`) harmanladım:
-- **`artifact_sorter`**: Elimdeki sihirli eşya (artifact) sözlüklerinden oluşan listeyi, sadece "power" değerlerine bakarak sıraladım. `sorted` içine `key=lambda...` vererek bunu tek satırda hallettim.
-- **`power_filter`**: Tapınağa girmeye çalışan büyücüleri filtrelemek için `filter` fonksiyonunu kullandım. Sadece gücü belirli bir değerin üstünde olanları (yine lambda ile) geçirdim.
-- **`spell_transformer`**: Listede duran büyü isimlerinin başına ve sonuna yıldız (`*`) eklemek için `map` fonksiyonunu kullandım. Bütün listeyi döngüye sokmadan tek hamlede dönüştürdüm.
-- **`mage_stats`**: Listedeki büyücülerin istatistiklerini (min, max, average) çıkarmak için Python'un `min`, `max`, `sum`, `len` ve `round` fonksiyonlarını bir arada kullandım.
-
-### 2. Adım: Higher-Order Functions (`ex1/higher_magic.py`)
-Burada fonksiyonları birer veri tipi gibi (First-Class Citizen) kullanarak birbirlerine pasladım. Yani bir fonksiyon parametre olarak başka bir fonksiyon aldı veya geriye yepyeni bir fonksiyon döndürdü:
-- **`spell_combiner`**: İki farklı büyüyü (iki ayrı fonksiyonu) parametre olarak alıp, ikisini de sırayla çalıştıran ve sonuçlarını birleştiren (tuple) bir yapı kurdum.
-- **`power_amplifier`**: Bir fonksiyonun gücünü dışarıdan aldığı bir çarpan (multiplier) ile artıran ve geriye yükseltilmiş yepyeni bir fonksiyon döndüren bir güçlendirici yazdım.
-- **`conditional_caster`**: Büyünün sadece belirli bir şart sağlandığında çalışmasını, aksi takdirde enerjiyi boşa harcamadan "fizzled" (patladı/söndü) döndürmesini sağlayan bir şartlayıcı (condition) fonksiyon ayarladım.
-- **`spell_sequence`**: Bir sürü büyüyü liste halinde alıp, tek bir tetiklemeyle hepsini sırayla çalıştıran ve sonuçları liste olarak dönen bir seri atış mekanizması tasarladım.
-
-### 3. Adım: Closure & Scope (`ex2/scope_mysteries.py`)
-Bir fonksiyonun içinde başka bir fonksiyon tanımlayarak, içteki fonksiyonun dışarıdaki anlık durumu "hatırlamasını" (closure) sağladım. `global` kullanmak yasaktı, bu yüzden durumu korumak için `nonlocal` anahtar kelimesini kullandım:
-- **`mage_counter`**: Her çağrıldığında 1 artan ama sayıyı globalde tutmayan, kendi izole hafızasında tutan bir sayaç yaptım. Birden fazla sayaç üretilirse birbirlerini etkilemiyorlar.
-- **`spell_accumulator`**: Atılan büyülerin güçlerini toplayarak üstüne ekleyen (birikimli toplam) bir kara delik gibi çalışan kümülatif toplayıcı kurdum.
-- **`enchantment_factory`**: Girdiğim formülü (örn: "Alevli") hatırlayıp, sonradan verilen her eşyayı bu formülle isimlendiren ("Alevli Kılıç", "Alevli Kalkan") bir seri üretim fabrikası ürettim.
-- **`memory_vault`**: Sadece kendi içindeki `store` (kaydet) ve `recall` (çağır) alt fonksiyonlarıyla erişilebilen kırılmaz bir "hafıza kasası" oluşturdum. Dışarıdan bu sözlüğe doğrudan erişim yok.
-
-### 4. Adım: Functools Kütüphanesi (`ex3/functools_artifacts.py`)
-Daha karmaşık işlemleri daha kısa çözmek için Python'un standart kütüphanesinden `functools` ve `operator` modüllerine geçtim:
-- **`spell_reducer`**: `functools.reduce` kullanarak bir listeyi baştan sona işleyip kümülatif olarak tek bir sayıya/değere indirgedim.
-- **`partial_enchanter`**: Sürekli aynı argümanları alan büyüler için `functools.partial` kullandım. Parametrelerin bir kısmını önceden sabitleyip, eksik kısımları sonradan alan pratik "yarım parşömenler" elde ettim.
-- **`memoized_fibonacci`**: Fibonacci gibi çok tekrarlı işlemlerde aynı hesabı tekrar yapmamak için fonksiyonun tepesine `@lru_cache` ekleyip hesaplamayı önbelleğe aldım.
-- **`spell_dispatcher`**: Kendisine gönderilen verinin tipine (sayı mı, metin mi, liste mi?) bakarak farklı bir tepki vermesini sağlayan şekil değiştiren kapılar için `singledispatch` yapısını kullandım.
-
-### 5. Adım: Decorators (`ex4/decorator_mastery.py`)
-Son aşamada sarmalayıcı (decorator) mantığıyla orijinal fonksiyona hiç dokunmadan ona ek yetenekler kazandırdım. Kimliğini kaybetmemesi için hep `functools.wraps` kullandım:
-- **`spell_timer`**: Çalıştırılan herhangi bir fonksiyonun ne kadar sürede tamamlandığını ölçen ve ekrana yazdıran bir zamanlayıcı zırhı yazdım.
-- **`power_validator`**: Büyü atılmadan önce araya girip, büyücünün gücünün yetip yetmediğini kontrol eden bir gümrük muhafızı ekledim. Gücü yetmiyorsa asıl fonksiyonu hiç çalıştırmıyor.
-- **`retry_spell`**: İçerideki fonksiyon `Exception` verirse işlemi sonlandırmak yerine 3 kez üst üste tekrar denemesini sağlayan inatçı bir yardımcı asistan ayarladım.
-- **`MageGuild Sınıfı`**: Bütün bu öğrendiklerimi birleştiren bir sınıf (Class) yazdım. Üstüne bir de örnek (instance) oluşturmadan sadece sınıf adı üzerinden doğrudan çağrılabilen bir `@staticmethod` (`validate_mage_name`) tanımladım.
+</div>
 
 ---
 
-## Geliştirme Kuralları ve Notlarım
+## 🎯 Modülün Amacı
 
-Projeyi geliştirirken sıkı sıkıya uyduğum bazı disiplin kuralları:
-- **Yorumsuz Temiz Kod:** Kodların içinde `docstring` veya açıklama satırı (comment) bilerek bırakmadım. Kod bloklarının isimlendirmeleriyle ve yapısıyla kendini ifade etmesini istedim.
-- **Tip Belirteçleri (Type Hinting):** Giren ve çıkan tüm verilerin tipini net olarak belirttim (`Callable`, `int`, `list`, `str` vb.). Kodun anlaşılabilirliği bu sayede arttı.
-- **Sadece Standart Kütüphane:** Dışarıdan (`pip` üzerinden) hiçbir eklenti kurmadım, her şeyi saf Python standartlarıyla hazırladım. 
-- **Güvenli Kod:** `eval` veya `exec` gibi ne çalıştıracağı belli olmayan riskli kodlardan uzak durdum.
-- **Okunabilirlik (PEP-8):** Kodları yazarken hiçbir satırın 79 karakteri (flake8 kuralları) aşmamasına özen gösterdim.
+Klasik `for`/`while` döngüleri ve upuzun fonksiyonlar yazmak yerine, fonksiyonları birer veri gibi kullanarak (First-Class Citizen) daha az kodla daha esnek çözümler üretmeyi öğretir. Beş aşamalı bu modül, `lambda`'dan başlayıp decorator'larla biter.
 
-## Nasıl Çalıştırılır?
+### 🎓 Ana Öğrenme Hedefleri
 
-Projenin içinde hiçbir harici bağımlılık yoktur (requirements.txt vb. gerekmiyor). İncelemek istediğiniz ilgili adımı doğrudan terminal üzerinden şu şekilde çalıştırabilirsiniz:
+#### ⚡ Lambda ve Yerleşik Fonksiyonlar
+- İsimsiz, tek satırlık `lambda` fonksiyonları yazmak
+- Bunları `sorted(key=...)`, `filter(...)`, `map(...)` ile birleştirmek
+
+#### 🔁 Higher-Order Functions
+- Bir fonksiyonu başka bir fonksiyona parametre olarak geçmek
+- Bir fonksiyonun, çağrıldığında yeni bir fonksiyon **döndürmesi**
+
+#### 🧠 Closure & Scope
+- İç içe tanımlanan bir fonksiyonun, dış fonksiyonun o anki durumunu "hatırlaması" (closure)
+- `global` yerine `nonlocal` anahtar kelimesiyle bu durumu güncellemek
+
+#### 🧰 `functools` Kütüphanesi
+- `functools.reduce()` ile bir listeyi kümülatif olarak tek bir değere indirgemek
+- `functools.partial()` ile bazı argümanları önceden sabitlemek
+- `@functools.lru_cache` ile tekrarlı hesaplamaları önbelleğe almak (memoization)
+- `@functools.singledispatch` ile gelen verinin tipine göre farklı davranmak
+
+#### 🎁 Decorators
+- `@functools.wraps` kullanarak orijinal fonksiyonun kimliğini (adı, docstring'i) koruyarak onu sarmalamak
+- Parametre alan decorator'lar (`power_validator(min_power)`) yazmak
+- `@staticmethod` ile bir sınıfın örneğine ihtiyaç duymadan çağrılabilen metotlar tanımlamak
+
+---
+
+## ✨ Egzersiz Detayları
+
+### 📋 Egzersiz Tablosu
+
+| Egzersiz | Dosya | Konu | Temel Kavram |
+|----------|-------|------|---------------|
+| **ex0** | `lambda_spells.py` | Lambda & Built-ins | `lambda`, `sorted`, `filter`, `map` |
+| **ex1** | `higher_magic.py` | Higher-Order Functions | Fonksiyon parametre/dönüş değeri olarak |
+| **ex2** | `scope_mysteries.py` | Closure & Scope | `nonlocal` |
+| **ex3** | `functools_artifacts.py` | `functools` | `reduce`, `partial`, `lru_cache`, `singledispatch` |
+| **ex4** | `decorator_mastery.py` | Decorators | `@wraps`, parametreli decorator, `@staticmethod` |
+
+---
+
+### **ex0 — Lambda & Built-ins (`lambda_spells.py`)**
+
+```python
+def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+    return sorted(artifacts, key=lambda artifact: artifact['power'], reverse=True)
+
+def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+    return list(filter(lambda mage: mage['power'] >= min_power, mages))
+
+def spell_transformer(spells: list[str]) -> list[str]:
+    return list(map(lambda spell: f"* {spell} *", spells))
+```
+
+`mage_stats()` ise `min`, `max`, `sum`, `len` ve `round` fonksiyonlarını bir arada kullanarak bir listeden istatistik (min/max/ortalama güç) çıkarır.
+
+---
+
+### **ex1 — Higher-Order Functions (`higher_magic.py`)**
+
+```python
+def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
+    def amplified(target: str, power: int) -> str:
+        return base_spell(target, power * multiplier)
+    return amplified
+```
+
+| Fonksiyon | Ne Yapar |
+|-----------|----------|
+| `spell_combiner` | İki fonksiyonu alıp ikisini de çalıştıran ve sonuçları `tuple` olarak döndüren bir fonksiyon üretir |
+| `power_amplifier` | Bir fonksiyonun gücünü dışarıdan verilen bir çarpanla artıran yeni bir fonksiyon döndürür |
+| `conditional_caster` | Bir koşul fonksiyonu sağlanmazsa `"Spell fizzled"` döndürür |
+| `spell_sequence` | Bir fonksiyon listesini sırayla çalıştırıp sonuçları liste olarak döndürür |
+
+---
+
+### **ex2 — Closure & Scope (`scope_mysteries.py`)**
+
+```python
+def mage_counter() -> Callable:
+    count: int = 0
+    def counter() -> int:
+        nonlocal count
+        count += 1
+        return count
+    return counter
+```
+
+`mage_counter()`'dan üretilen her sayaç kendi izole hafızasında `count` değerini tutar; birden fazla sayaç birbirini etkilemez. `memory_vault()`, `store`/`recall` adında iki iç fonksiyon döndürerek dışarıdan doğrudan erişilemeyen bir "hafıza kasası" oluşturur.
+
+---
+
+### **ex3 — `functools` Kütüphanesi (`functools_artifacts.py`)**
+
+```python
+@functools.lru_cache(maxsize=None)
+def memoized_fibonacci(n: int) -> int:
+    if n == 0: return 0
+    if n == 1: return 1
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
+```
+
+| Fonksiyon | `functools` Aracı | Amaç |
+|-----------|--------------------|------|
+| `spell_reducer` | `functools.reduce` | Listeyi kümülatif olarak tek değere indirger (`add`, `multiply`, `max`, `min`) |
+| `partial_enchanter` | `functools.partial` | Bazı argümanları (`power`, `element`) önceden sabitler |
+| `memoized_fibonacci` | `functools.lru_cache` | Tekrarlı fibonacci hesaplarını önbelleğe alır |
+| `spell_dispatcher` | `functools.singledispatch` | Gelen verinin tipine (`int`, `str`, `list`) göre farklı davranır |
+
+---
+
+### **ex4 — Decorators (`decorator_mastery.py`)**
+
+```python
+def spell_timer(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"Spell completed in {time.time() - start:.3f} seconds")
+        return result
+    return wrapper
+```
+
+| Decorator | Görevi |
+|-----------|--------|
+| `spell_timer` | Fonksiyonun çalışma süresini ölçer |
+| `power_validator(min_power)` | Yetersiz güçle çağrılan fonksiyonu hiç çalıştırmadan reddeder |
+| `retry_spell(max_attempts)` | Fonksiyon `Exception` fırlatırsa belirtilen sayıda tekrar dener |
+
+`MageGuild` sınıfı, `@staticmethod` ile işaretlenmiş `validate_mage_name()` metodunu (nesne oluşturmadan `MageGuild.validate_mage_name(...)` şeklinde) ve `@power_validator(min_power=10)` ile korunan bir `cast_spell()` metodunu bir araya getirir.
+
+---
+
+## 📁 Dosya Yapısı
+
+```
+python10/
+├── ex0/
+│   └── lambda_spells.py          # lambda, sorted, filter, map
+├── ex1/
+│   └── higher_magic.py           # Higher-order functions
+├── ex2/
+│   └── scope_mysteries.py        # Closure, nonlocal
+├── ex3/
+│   └── functools_artifacts.py    # reduce, partial, lru_cache, singledispatch
+└── ex4/
+    └── decorator_mastery.py      # Decorators, @staticmethod
+```
+
+---
+
+## 💻 Kullanım
+
+Projede harici hiçbir bağımlılık yoktur (sadece standart kütüphane). Her aşama doğrudan çalıştırılabilir:
 
 ```bash
 python3 ex0/lambda_spells.py
+python3 ex1/higher_magic.py
+python3 ex2/scope_mysteries.py
+python3 ex3/functools_artifacts.py
+python3 ex4/decorator_mastery.py
 ```
-*(Diğer aşamalar da aynı formatta kendi yollarında sorunsuzca çalışacaktır.)*
+
+---
+
+## 📚 Notlar
+
+- Bu modülde bilinçli olarak kod içi yorum/docstring bırakılmamıştır; kod, isimlendirme ve yapısıyla kendini anlatmayı hedefler.
+- Tüm fonksiyonlarda tip belirteci (`Callable`, `int`, `list`, `str`, ...) kullanılmıştır.
+- `eval`/`exec` gibi riskli yapılar kullanılmamıştır; sadece standart kütüphane (`functools`, `operator`, `time`) ile çalışılmıştır.
+
+---
+
+## ✅ Doğrulama
+
+```bash
+python3 -m flake8 ex0/ ex1/ ex2/ ex3/ ex4/
+python3 -m mypy   ex0/ ex1/ ex2/ ex3/ ex4/ --strict
+```
+
+---
+
+### 👩‍💻 Created by Sude Naz Karayıldırım
